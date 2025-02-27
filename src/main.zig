@@ -180,7 +180,7 @@ fn createLoop(code: []u8, startIndex: usize) !usize {
 fn printUtf8() !void {
     const charCount = utf8CharLen(Bytes.items[Pointer]);
     if (charCount == 0) {
-        printLn("{s}* The utf-8 sequence has a problem in its first byte{s}", .{ RED, RESET_COLOR });
+        printRedLn("* The utf-8 sequence has a problem in its first byte", .{});
         return error.InvalidFirstByte;
     }
 
@@ -192,7 +192,7 @@ fn printUtf8() !void {
     }
 
     if (!std.unicode.utf8ValidateSlice(utf8Bytes.items)) {
-        printLn("{s}* The utf-8 is not valid{s}", .{ RED, RESET_COLOR });
+        printRedLn("* The utf-8 is not valid", .{});
         return error.InvalidUtf8;
     }
     std.debug.print("{s}", .{utf8Bytes.items});
