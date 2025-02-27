@@ -111,10 +111,10 @@ fn executeCode(code: []u8) anyerror!void {
         index += 1;
         switch (ch) {
             '+' => {
-                Bytes.items[Pointer] = @addWithOverflow(Bytes.items[Pointer], 1)[0];
+                Bytes.items[Pointer] +%= 1;
             },
             '-' => {
-                Bytes.items[Pointer] = @subWithOverflow(Bytes.items[Pointer], 1)[0];
+                Bytes.items[Pointer] -%= 1;
             },
             '>' => {
                 if (Pointer + 1 == Bytes.items.len) {
