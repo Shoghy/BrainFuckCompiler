@@ -180,18 +180,13 @@ fn printUtf8() !void {
         return error.InvalidFirstByte;
     }
 
-    var utf8Bytes = std.ArrayList(u8).init(std.heap.page_allocator);
-    defer utf8Bytes.deinit();
+    const utf8Bytes = Bytes.items[Pointer..charCount];
 
-    for (0..charCount) |i| {
-        try utf8Bytes.append(Bytes.items[Pointer + i]);
-    }
-
-    if (!std.unicode.utf8ValidateSlice(utf8Bytes.items)) {
+    if (!std.unicode.utf8ValidateSlice(utf8Bytes)) {
         printRedLn("* The utf-8 is not valid", .{});
         return error.InvalidUtf8;
     }
-    std.debug.print("{s}", .{utf8Bytes.items});
+    std.debug.print("{s}", .{utf8Bytes});
 }
 
 fn utf8CharLen(firstByte: u8) u8 {
