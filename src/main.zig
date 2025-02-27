@@ -146,19 +146,24 @@ fn executeCode(code: []u8) anyerror!void {
 
 fn createLoop(code: []u8, startIndex: usize) !usize {
     var lastIndex = startIndex;
-    var deep: usize = 0;
-    for (startIndex..code.len) |index| {
-        if (code[index] == '[') {
+    var deep: usize = 1;
+    while (deep != 0) {
+        lastIndex += 1;
+        if (lastIndex >= code.len) {
+            break;
+        }
+        if (code[lastIndex] == '[') {
             deep += 1;
             continue;
         }
-        if (code[index] != ']') continue;
+        if (code[lastIndex] != ']') continue;
+        deep -= 1;
         if (deep == 0) {
-            lastIndex = index;
             break;
-        } else {
-            deep -= 1;
         }
+    }
+    if (deep != 0) {
+        return error.LoopWithoutClose;
     }
 
     const loopPointer = Pointer;
