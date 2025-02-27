@@ -197,14 +197,11 @@ fn printUtf8() !void {
 fn utf8CharLen(firstByte: u8) u8 {
     if (firstByte < 128) return 1;
 
-    var b = firstByte >> 3;
-    if (b == 0b11110) return 4;
+    if ((firstByte >> 3) == 0b11110) return 4;
 
-    b = b >> 1;
-    if (b == 0b1110) return 3;
+    if ((firstByte >> 4) == 0b1110) return 3;
 
-    b = b >> 1;
-    if (b == 0b110) return 2;
+    if ((firstByte >> 5) == 0b110) return 2;
 
     return 0;
 }
