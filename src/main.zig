@@ -28,15 +28,6 @@ fn isValidChar(ch: u8) bool {
     return false;
 }
 
-pub fn eql(a: []const u8, b: []const u8) bool {
-    if (a.len != b.len) return false;
-    if (a.ptr == b.ptr) return true;
-    for (a, b) |a_elem, b_elem| {
-        if (a_elem != b_elem) return false;
-    }
-    return true;
-}
-
 pub fn main() !void {
     defer Bytes.deinit();
 
@@ -52,7 +43,7 @@ pub fn main() !void {
     var showMemory = false;
     if (args.len > 2) {
         const thirdArg = args[2];
-        showMemory = eql(thirdArg, "-s");
+        showMemory = std.mem.eql(u8, thirdArg, "-s");
     }
 
     const filePath = args[1];
