@@ -173,12 +173,13 @@ fn createLoop(code: []u8, startIndex: usize) !usize {
 }
 
 fn printUtf8() !void {
-    const charCount = utf8CharLen(Bytes.items[Pointer]);
+    var charCount: usize = utf8CharLen(Bytes.items[Pointer]);
     if (charCount == 0) {
         printRedLn("* The utf-8 sequence has a problem in its first byte", .{});
         return error.InvalidFirstByte;
     }
 
+    charCount += Pointer;
     const utf8Bytes = Bytes.items[Pointer..charCount];
 
     if (!std.unicode.utf8ValidateSlice(utf8Bytes)) {
