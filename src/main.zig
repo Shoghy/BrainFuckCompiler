@@ -2,6 +2,8 @@ const std = @import("std");
 
 const RESET_COLOR = "\x1B[0m";
 const RED = "\x1B[31m";
+const BOLD = "\x1B[1m";
+const UNDERLINE = "\x1B[4m";
 
 const OpenFileError = std.fs.File.OpenError;
 const File = std.fs.File;
@@ -55,9 +57,7 @@ pub fn main() !void {
         try executeCode(fileContent.items);
 
         if (showMemory) {
-            std.debug.print("\n\n", .{});
-            printLn("Pointer: {}", .{Pointer});
-            printLn("Memory: {any}", .{Bytes.items});
+            printMemory();
         }
     } else |fileError| {
         switch (fileError) {
@@ -199,4 +199,29 @@ fn utf8CharLen(firstByte: u8) u8 {
     if ((firstByte >> 5) == 0b110) return 2;
 
     return 0;
+}
+
+fn printMemory() void {
+    std.debug.print("\n\n", .{});
+    printLn("Pointer: {}", .{Pointer});
+    std.debug.print("Memory: [", .{});
+
+    for (0.., Bytes.items) |index, byte| {
+        std.debug.print(" ", .{});
+
+        if (index == Pointer) {
+            std.debug.print("{s}{s}", .{ BOLD, UNDERLINE });
+        }
+
+        std.debug.print("{}", .{byte});
+
+        if (index == Pointer) {
+            std.debug.print("{s}", .{RESET_COLOR});
+        }
+        if (index + 1 < Bytes.items.len) {
+            std.debug.print(",", .{});
+        }
+    }
+
+    std.debug.print(" ]\n", .{});
 }
