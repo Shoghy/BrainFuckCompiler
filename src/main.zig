@@ -59,27 +59,25 @@ pub fn main() !void {
         if (showMemory) {
             printMemory();
         }
-    } else |fileError| {
-        switch (fileError) {
-            OpenFileError.AccessDenied => {
-                printRedLn("* Access denied error", .{});
-            },
-            OpenFileError.BadPathName => {
-                printRedLn("* The file name provider is not valid", .{});
-            },
-            OpenFileError.FileBusy => {
-                printRedLn("* The file is already in use", .{});
-            },
-            OpenFileError.FileNotFound => {
-                printRedLn("* The file doesn't exists", .{});
-            },
-            OpenFileError.InvalidUtf8 => {
-                printRedLn("* The file bytes are not a valid utf-8", .{});
-            },
-            else => {
-                printRedLn("* Unable to open the file", .{});
-            },
-        }
+    } else |fileError| switch (fileError) {
+        OpenFileError.AccessDenied => {
+            printRedLn("* Access denied error", .{});
+        },
+        OpenFileError.BadPathName => {
+            printRedLn("* The file name provider is not valid", .{});
+        },
+        OpenFileError.FileBusy => {
+            printRedLn("* The file is already in use", .{});
+        },
+        OpenFileError.FileNotFound => {
+            printRedLn("* The file doesn't exists", .{});
+        },
+        OpenFileError.InvalidUtf8 => {
+            printRedLn("* The file bytes are not a valid utf-8", .{});
+        },
+        else => {
+            printRedLn("* Unable to open the file", .{});
+        },
     }
 }
 
