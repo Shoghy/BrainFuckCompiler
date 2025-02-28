@@ -166,8 +166,7 @@ fn createLoop(code: []u8, startIndex: usize) !usize {
         return error.LoopWithoutClose;
     }
 
-    const loopPointer = Pointer;
-    while (Bytes.items[loopPointer] != 0) {
+    while (Bytes.items[Pointer] != 0) {
         try executeCode(code[startIndex..lastIndex]);
     }
     return lastIndex + 1;
