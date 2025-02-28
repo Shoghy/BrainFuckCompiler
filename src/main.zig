@@ -88,8 +88,8 @@ fn readFile(file: File) !std.ArrayListAligned(u8, null) {
     var buffer: [1]u8 = undefined;
     var fileContent = std.ArrayList(u8).init(std.heap.page_allocator);
 
-    while (reader.read(&buffer)) |byte| {
-        if (byte == 0) {
+    while (reader.read(&buffer)) |numberOfBytesRead| {
+        if (numberOfBytesRead == 0) {
             break;
         }
 
