@@ -19,13 +19,13 @@ fn printRedLn(comptime fmt: []const u8, args: anytype) void {
     std.debug.print("{s}\n", .{RESET_COLOR});
 }
 
-const ValidChard: [8]u8 = .{ '+', '-', '<', '>', '[', ']', '.', ',' };
+const ValidChars: [8]u8 = .{ '+', '-', '<', '>', '[', ']', '.', ',' };
 var Bytes = std.ArrayList(u8).init(std.heap.page_allocator);
 var Pointer: usize = 0;
 
 fn isValidChar(ch: u8) bool {
-    for (ValidChard) |vCh| {
-        if (ch == vCh) return true;
+    for (ValidChars) |valid| {
+        if (ch == valid) return true;
     }
     return false;
 }
