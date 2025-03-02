@@ -19,7 +19,7 @@ fn printRedLn(comptime fmt: []const u8, args: anytype) void {
     std.debug.print("{s}\n", .{RESET_COLOR});
 }
 
-const ValidChars: [8]u8 = .{ '+', '-', '<', '>', '[', ']', '.', ',' };
+const ValidChars = "+-<>[].,";
 var Bytes = std.ArrayList(u8).init(std.heap.page_allocator);
 var Pointer: usize = 0;
 
