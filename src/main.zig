@@ -86,8 +86,8 @@ fn readFile(file: File) !std.ArrayListAligned(u8, null) {
     var buffer: [1]u8 = undefined;
     var fileContent = std.ArrayList(u8).init(std.heap.page_allocator);
 
-    while (reader.read(&buffer)) |numberOfBytesRead| {
-        if (numberOfBytesRead == 0) {
+    while (reader.read(&buffer)) |bytesRead| {
+        if (bytesRead == 0) {
             break;
         }
 
@@ -103,7 +103,9 @@ fn readFile(file: File) !std.ArrayListAligned(u8, null) {
 }
 
 fn executeCode(code: []u8) anyerror!void {
+    const stdin = std.io.getStdIn();
     var index: usize = 0;
+
     while (index < code.len) {
         const ch = code[index];
         index += 1;
@@ -136,6 +138,18 @@ fn executeCode(code: []u8) anyerror!void {
             },
             '.' => {
                 try printUtf8();
+            },
+            ',' => {
+                var buffer: [1]u8 = undefined;
+                while (stdin.read(&buffer)) |bytesRead| {
+                    if (bytesRead == 0) break;
+                    const inCh = buffer[0];
+                    if (inCh == '\r') continue;
+                    Bytes.items[Pointer] = inCh;
+                    break;
+                } else |err| {
+                    return err;
+                }
             },
             else => {},
         }
