@@ -146,13 +146,13 @@ fn createLoop(code: []u8, startIndex: usize) !usize {
     var lastIndex = startIndex;
     var deep: usize = 1;
     while (deep != 0) {
-        lastIndex += 1;
-        if (lastIndex >= code.len) {
-            break;
-        }
+        defer lastIndex += 1;
         if (code[lastIndex] == '[') {
             deep += 1;
             continue;
+        }
+        if (lastIndex >= code.len) {
+            break;
         }
         if (code[lastIndex] != ']') continue;
         deep -= 1;
@@ -160,10 +160,12 @@ fn createLoop(code: []u8, startIndex: usize) !usize {
             break;
         }
     }
+
     if (deep != 0) {
         return error.LoopWithoutClose;
     }
 
+    lastIndex -= 1;
     while (Bytes.items[Pointer] != 0) {
         try executeCode(code[startIndex..lastIndex]);
     }
